@@ -5,7 +5,11 @@
 # Author:: Chetan Mittal
 # License:: MIT
 
+class ProductError < StandardError; end;
+class ImportError < StandardError; end;
+
 class ProductImport < ActiveRecord::Base
+
   has_attached_file :data_file, :path => ":rails_root/lib/etc/product_data/data-files/:basename.:extension"
   validates_attachment_presence :data_file
 
@@ -19,7 +23,17 @@ class ProductImport < ActiveRecord::Base
   # Image main is created independtly, then each other image also created and associated with the product
   # Meta keywords and description are created on the product model
 
-  def import_data!
+  def import_data!(_transaction=true)
+    if _transaction
+      transaction do
+        _import_data
+      end
+    else
+      _import_data
+    end
+  end
+
+  def _import_data
     begin
       #Get products *before* import -
       @products_before_import = Spree::Product.all
@@ -57,7 +71,7 @@ class ProductImport < ActiveRecord::Base
         variant_comparator_column = col[variant_comparator_field]
 
         if IMPORT_PRODUCT_SETTINGS[:create_variants] and variant_comparator_column and
-            p = Spree::Product.where(variant_comparator_field => row[variant_comparator_column]).first
+          p = Spree::Product.where(variant_comparator_field => row[variant_comparator_column]).first
 
           log("found product with this field #{variant_comparator_field}=#{row[variant_comparator_column]}")
           p.update_attribute(:deleted_at, nil) if p.deleted_at #Un-delete product if it is there
@@ -73,16 +87,13 @@ class ProductImport < ActiveRecord::Base
       end
 
       log("Importing products for #{self.data_file_file_name} completed at #{DateTime.now}")
-
     rescue Exception => exp
       log("An error occurred during import, please check file and try again. (#{exp.message})\n#{exp.backtrace.join('\n')}", :error)
-      raise Exception(exp.message)
+      raise ImportError, exp.message
     end
-
     #All done!
     return [:notice, "Product data was successfully imported."]
   end
-
 
   private
 
@@ -170,9 +181,9 @@ class ProductImport < ActiveRecord::Base
 
     #We can't continue without a valid product here
     unless product.valid?
-      log("A product could not be imported - here is the information we have:\n" +
+      log(msg = "A product could not be imported - here is the information we have:\n" +
           "#{pp params_hash}, #{product.errors.full_messages.join(', ')}")
-      return false
+      raise ProductError, msg
     end
 
     #Just log which product we're processing

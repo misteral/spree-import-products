@@ -48,6 +48,26 @@ describe ProductImport do
       product.option_types.should =~ [size, color]
       variant.option_values.reload.should =~ Spree::OptionValue.where(:name => %w(Large Yellow))
     end
+  end
+
+  describe "#import_data!" do
+    let(:valid_import) { ProductImport.create :data_file => File.new(File.join(File.dirname(__FILE__), '..', 'fixtures', 'valid.csv')) }
+    let(:invalid_import) { ProductImport.create :data_file => File.new(File.join(File.dirname(__FILE__), '..', 'fixtures', 'invalid.csv')) }
+
+    it "create products successfully with valid csv" do
+      valid_import.import_data!
+      Spree::Product.count.should == 1
+    end
+
+    it "rollback transation on invalid csv and params = true (transaction)" do
+      expect { invalid_import.import_data! }.to raise_error(ImportError)
+      Spree::Product.count.should == 0
+    end
+
+    it "sql are permanent on invalid csv and params = false (no transaction)" do
+      expect { invalid_import.import_data!(false) }.to raise_error(ImportError)
+      Spree::Product.count.should == 1
+    end
 
   end
 end
