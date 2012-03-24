@@ -98,7 +98,7 @@ class ProductImport < ActiveRecord::Base
     # Just update variant if exists
     variant = Spree::Variant.find_by_sku(options[:with][:sku])
     if !variant
-      product.variants.new
+      variant = product.variants.new
       variant.id = options[:with][:id]
     else
       options[:with].delete(:id)
@@ -120,10 +120,12 @@ class ProductImport < ActiveRecord::Base
       )
       if applicable_option_type.is_a?(Spree::OptionType)
         product.option_types << applicable_option_type unless product.option_types.include?(applicable_option_type)
-        variant.option_values << applicable_option_type.option_values.find(
+        values = applicable_option_type.option_values.find(
           :all,
           :conditions => ["presentation = ? OR name = ?", value, value]
         )
+        values = applicable_option_type.option_values.create(:presentation => value, :name => value) if values.empty?
+        variant.option_values << values
       end
     end
 

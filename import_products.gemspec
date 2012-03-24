@@ -21,9 +21,4 @@ Gem::Specification.new do |s|
   s.add_dependency('delayed_job_active_record')
 
   s.add_dependency 'spree_sample'
-  s.add_development_dependency 'capybara', '1.0.1'
-  s.add_development_dependency 'factory_girl'
-  s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'rspec-rails',  '~> 2.7'
-  s.add_development_dependency 'sqlite3'
 end
