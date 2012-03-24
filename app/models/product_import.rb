@@ -120,12 +120,9 @@ class ProductImport < ActiveRecord::Base
       )
       if applicable_option_type.is_a?(Spree::OptionType)
         product.option_types << applicable_option_type unless product.option_types.include?(applicable_option_type)
-        values = applicable_option_type.option_values.find(
-          :all,
-          :conditions => ["presentation = ? OR name = ?", value, value]
-        )
-        values = applicable_option_type.option_values.create(:presentation => value, :name => value) if values.empty?
-        variant.option_values << values
+        opt_value = applicable_option_type.option_values.where(["presentation = ? OR name = ?", value, value]).first
+        opt_value = applicable_option_type.option_values.create(:presentation => value, :name => value) unless opt_value
+        variant.option_values << opt_value unless variant.option_values.include?(opt_value)
       end
     end
 

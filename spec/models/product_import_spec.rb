@@ -38,5 +38,16 @@ describe ProductImport do
       product.option_types.should =~ [size, color]
       variant.option_values.should =~ Spree::OptionValue.where(:name => %w(Large Yellow))
     end
+
+    it "should not duplicate option_values for existing variant" do
+      expect do
+        ProductImport.new.send(:create_variant_for, product, :with => params.merge(:"tshirt-size" => "Large", :"tshirt-color" => "Yellow"))
+        ProductImport.new.send(:create_variant_for, product, :with => params.merge(:"tshirt-size" => "Large", :"tshirt-color" => "Yellow"))
+      end.to change(product.variants, :count).by(1)
+      variant = product.variants.last
+      product.option_types.should =~ [size, color]
+      variant.option_values.reload.should =~ Spree::OptionValue.where(:name => %w(Large Yellow))
+    end
+
   end
 end
