@@ -69,5 +69,10 @@ describe ProductImport do
       Spree::Product.count.should == 1
     end
 
+    it "handles product properties" do
+      Spree::Property.create :name => "brand", :presentation => "Brand"
+      expect { @import = ProductImport.create(:data_file => File.new(File.join(File.dirname(__FILE__), '..', 'fixtures', 'products_with_properties.csv'))).import_data!(true) }.to change(Spree::Product, :count).by(1)
+      Spree::Product.last.product_properties.map(&:value).should == ["Rails"]
+    end
   end
 end
