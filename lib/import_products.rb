@@ -1,4 +1,5 @@
 require 'spree_core'
+require 'spree_auth'
 require 'delayed_job'
 
 module ImportProducts

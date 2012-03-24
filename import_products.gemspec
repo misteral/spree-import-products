@@ -2,7 +2,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'import_products'
   s.version     = '1.0.1'
-  s.summary     = "spree_import_products ... imports products. From a CSV file via Spree's Admin interface" 
+  s.summary     = "spree_import_products ... imports products. From a CSV file via Spree's Admin interface"
   #s.description = 'Add (optional) gem description here'
   s.required_ruby_version = '>= 1.8.7'
 
@@ -16,5 +16,14 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency('spree_core', '>= 1.0.0.rc2')
+  s.add_dependency('spree_auth', '>= 1.0.0.rc2')
   s.add_dependency('delayed_job')
+  s.add_dependency('delayed_job_active_record')
+
+  s.add_dependency 'spree_sample'
+  s.add_development_dependency 'capybara', '1.0.1'
+  s.add_development_dependency 'factory_girl'
+  s.add_development_dependency 'ffaker'
+  s.add_development_dependency 'rspec-rails',  '~> 2.7'
+  s.add_development_dependency 'sqlite3'
 end
