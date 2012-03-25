@@ -18,7 +18,7 @@ class ProductImport < ActiveRecord::Base
   serialize :product_ids, Array
 
   def products
-    Spree::Product.find product_ids
+    Spree::Product.where :id => product_ids
   end
 
   require 'csv'
@@ -26,7 +26,7 @@ class ProductImport < ActiveRecord::Base
   require 'open-uri'
 
   def destroy_products
-    Spree::Product.find_each(:conditions => { :id => product_ids }) { |product| product.destroy }
+    products.destroy_all
   end
 
   state_machine :initial => :created do
