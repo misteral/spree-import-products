@@ -1,7 +1,7 @@
 <div class="toolbar" data-hook="toolbar">
   <ul class="actions">
     <li id="delete_product_import">
-      <%= button_link_to t(:delete_product_import), admin_product_import_path(@product_import), {:method => :delete, :confirm => "Deleting this import will delete all the product associated, are you sure ?"} %>
+      <%= button_link_to t(:delete_product_import), admin_product_import_path(@product_import), {:method => :delete, :confirm => t("confirm_delete_product_import")} %>
     </li>
   </ul>
   <br class="clear" />
