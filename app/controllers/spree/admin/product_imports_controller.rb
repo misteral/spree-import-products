@@ -4,10 +4,6 @@ class Spree::Admin::ProductImportsController < Spree::Admin::BaseController
   #Feel free to refactor and submit a pull request.
 
   def index
-    redirect_to :action => :new
-  end
-
-  def new
     @product_import = ProductImport.new
   end
 
@@ -20,6 +16,14 @@ class Spree::Admin::ProductImportsController < Spree::Admin::BaseController
     @product_import = ProductImport.create(params[:product_import])
     Delayed::Job.enqueue ImportProducts::ImportJob.new(@product_import, @current_user)
     flash[:notice] = t('product_import_processing')
-    redirect_to :action => :new
+    redirect_to admin_product_imports_path
+  end
+
+  def destroy
+    @product_import = ProductImport.find(params[:id])
+    if @product_import.destroy
+      flash[:notice] = t('delete_product_import_successful')
+    end
+    redirect_to admin_product_imports_path
   end
 end

@@ -15,12 +15,25 @@ feature "Import products" do
 
     Delayed::Worker.new.work_off
 
+    # should have created the product
+    visit spree.admin_products_path
+    page.should have_content("Bloch Kids Tap Flexww")
+
     visit spree.admin_product_imports_path
     page.should have_content("valid.csv")
     page.should have_content("Completed")
+
     click_link "Show"
-    page.should have_content("S0388G-bloch-kids-tap-flexewe")
-    # click_link "Destroy"
+    page.should have_content("Bloch Kids Tap Flexww")
+
+    click_button "Delete"
+    page.should have_content("Import and products associated deleted successfully")
+    page.should_not have_content("valid.csv")
+
+    # should have deleted product created by import
+    visit spree.admin_products_path
+    page.should_not have_content("Bloch Kids Tap Flexww")
+
     save_and_open_page
   end
 
