@@ -7,6 +7,7 @@
 
 class ProductError < StandardError; end;
 class ImportError < StandardError; end;
+class SkuError < StandardError; end;
 
 class ProductImport < ActiveRecord::Base
 
@@ -153,6 +154,7 @@ class ProductImport < ActiveRecord::Base
 
     # Just update variant if exists
     variant = Spree::Variant.find_by_sku(options[:with][:sku])
+    raise SkuError, "SKU #{variant.sku} should belongs to #{product.inspect} but was #{variant.product.inspect}" if variant && variant.product != product
     if !variant
       variant = product.variants.new
       variant.id = options[:with][:id]

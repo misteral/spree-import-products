@@ -48,6 +48,13 @@ describe ProductImport do
       product.option_types.should =~ [size, color]
       variant.option_values.reload.should =~ Spree::OptionValue.where(:name => %w(Large Yellow))
     end
+
+    it "throws an exception when variant with sku exist for another product" do
+      other_product = Factory(:product, :sku => "002")
+      expect do
+        ProductImport.new.send(:create_variant_for, product, :with => params.merge(:"tshirt-size" => "Large", :"tshirt-color" => "Yellow"))
+      end.to raise_error(SkuError)
+    end
   end
 
   describe "#import_data!" do
