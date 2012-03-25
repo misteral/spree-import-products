@@ -1,3 +1,14 @@
+<div class="toolbar" data-hook="toolbar">
+  <ul class="actions">
+    <li id="delete_product_import">
+      <%= button_link_to t(:delete_product_import), admin_product_import_path(@product_import), {:method => :delete, :confirm => "Deleting this import will delete all the product associated, are you sure ?"} %>
+    </li>
+  </ul>
+  <br class="clear" />
+</div>
+
+<h1><%= t(:show_product_import) %></h1>
+
 <table class="index" id="listing_products">
   <tr data-hook="admin_products_index_headers">
     <th><%= t(:sku) %></th>
