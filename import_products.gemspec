@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
 
-  s.add_dependency('spree_core', '>= 1.0.0.rc2')
-  s.add_dependency('spree_auth', '>= 1.0.0.rc2')
+  s.add_dependency('spree_core', '~> 1.0.0')
+  s.add_dependency('spree_auth', '~> 1.0.0')
   s.add_dependency('delayed_job')
   s.add_dependency('delayed_job_active_record')
 
