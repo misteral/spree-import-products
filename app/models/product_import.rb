@@ -26,7 +26,7 @@ class ProductImport < ActiveRecord::Base
   require 'open-uri'
 
   def destroy_products
-    Spree::Product.delete_all :id => product_ids
+    Spree::Product.find_each(:conditions => { :id => product_ids }) { |product| product.destroy }
   end
 
   state_machine :initial => :created do
