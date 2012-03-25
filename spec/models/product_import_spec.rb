@@ -59,6 +59,12 @@ describe ProductImport do
       Spree::Product.count.should == 1
     end
 
+    it "tracks product created ids" do
+      valid_import.import_data!
+      valid_import.product_ids.should == [Spree::Product.last.id]
+      valid_import.products.should == [Spree::Product.last]
+    end
+
     it "rollback transation on invalid csv and params = true (transaction)" do
       expect { invalid_import.import_data! }.to raise_error(ImportError)
       Spree::Product.count.should == 0
