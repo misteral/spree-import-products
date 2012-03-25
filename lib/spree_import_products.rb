@@ -1,4 +1,4 @@
 require 'spree_core'
 require 'spree_auth'
 require 'delayed_job'
-require 'import_products/engine'
+require 'spree_import_products/engine'

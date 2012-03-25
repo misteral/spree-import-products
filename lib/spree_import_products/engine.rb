@@ -1,6 +1,6 @@
-module ImportProducts
+module SpreeImportProducts
   class Engine < Rails::Engine
-    engine_name 'import_products'
+    engine_name 'spree_import_products'
 
     config.autoload_paths += %W(#{config.root}/lib)
 
@@ -9,7 +9,7 @@ module ImportProducts
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 
-      Spree::UserMailer.send(:include, ImportProducts::UserMailerExt)
+      Spree::UserMailer.send(:include, UserMailerExt)
 
     end
 

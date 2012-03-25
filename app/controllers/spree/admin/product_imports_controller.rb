@@ -1,29 +1,31 @@
-class Spree::Admin::ProductImportsController < Spree::Admin::BaseController
-  #Sorry for not using resource_controller railsdog - I wanted to, but then... I did it this way.
-  #Verbosity is nice?
-  #Feel free to refactor and submit a pull request.
+module Spree
+  class Admin::ProductImportsController < Admin::BaseController
+    #Sorry for not using resource_controller railsdog - I wanted to, but then... I did it this way.
+    #Verbosity is nice?
+    #Feel free to refactor and submit a pull request.
 
-  def index
-    @product_import = ProductImport.new
-  end
-
-  def show
-    @product_import = ProductImport.find(params[:id])
-    @products = @product_import.products
-  end
-
-  def create
-    @product_import = ProductImport.create(params[:product_import])
-    Delayed::Job.enqueue ImportProducts::ImportJob.new(@product_import, @current_user)
-    flash[:notice] = t('product_import_processing')
-    redirect_to admin_product_imports_path
-  end
-
-  def destroy
-    @product_import = ProductImport.find(params[:id])
-    if @product_import.destroy
-      flash[:notice] = t('delete_product_import_successful')
+    def index
+      @product_import = ProductImport.new
     end
-    redirect_to admin_product_imports_path
+
+    def show
+      @product_import = ProductImport.find(params[:id])
+      @products = @product_import.products
+    end
+
+    def create
+      @product_import = ProductImport.create(params[:product_import])
+      Delayed::Job.enqueue ImportProducts::ImportJob.new(@product_import, @current_user)
+      flash[:notice] = t('product_import_processing')
+      redirect_to admin_product_imports_path
+    end
+
+    def destroy
+      @product_import = ProductImport.find(params[:id])
+      if @product_import.destroy
+        flash[:notice] = t('delete_product_import_successful')
+      end
+      redirect_to admin_product_imports_path
+    end
   end
 end

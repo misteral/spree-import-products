@@ -1,4 +1,4 @@
-module ImportProducts
+module SpreeImportProducts
   class ImportJob
     attr_accessor :product_import_id
     attr_accessor :user_id

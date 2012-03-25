@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'import_products'
+  s.name        = 'spree_import_products'
   s.version     = '1.0.1'
   s.summary     = "spree_import_products ... imports products. From a CSV file via Spree's Admin interface"
   #s.description = 'Add (optional) gem description here'
