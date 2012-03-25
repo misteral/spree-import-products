@@ -55,8 +55,8 @@ describe ProductImport do
     let(:invalid_import) { ProductImport.create :data_file => File.new(File.join(File.dirname(__FILE__), '..', 'fixtures', 'invalid.csv')) }
 
     it "create products successfully with valid csv" do
-      valid_import.import_data!
-      Spree::Product.count.should == 1
+      expect { valid_import.import_data! }.to change(Spree::Product, :count).by(1)
+      Spree::Product.last.variants.count.should == 2
     end
 
     it "tracks product created ids" do
