@@ -11,15 +11,13 @@ feature "Import products" do
     click_button "Create"
 
     page.should have_content("valid.csv")
-    page.should have_content("in progress")
+    page.should have_content("Created")
 
     Delayed::Worker.new.work_off
 
     visit spree.admin_product_imports_path
     page.should have_content("valid.csv")
-    page.should have_content("completed")
-
-    save_and_open_page
+    page.should have_content("Completed")
   end
 
 end

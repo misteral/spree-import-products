@@ -31,7 +31,7 @@ class ProductImport < ActiveRecord::Base
     event :complete do
       transition :to => :completed, :from => :started
     end
-    event :fail do
+    event :failure do
       transition :to => :failed, :from => :started
     end
 
@@ -46,6 +46,13 @@ class ProductImport < ActiveRecord::Base
     end
   end
 
+  def state_datetime
+    if failed?
+      failed_at
+    elsif completed?
+      completed_at
+    end
+  end
 
   ## Data Importing:
   # List Price maps to Master Price, Current MAP to Cost Price, Net 30 Cost unused

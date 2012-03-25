@@ -16,7 +16,7 @@ module ImportProducts
         Spree::UserMailer.product_import_results(Spree::User.find(self.user_id)).deliver
         product_import.complete
       rescue Exception => exp
-        product_import.fail
+        product_import.failure
         Spree::UserMailer.product_import_results(Spree::User.find(self.user_id), exp.message).deliver
       end
     end

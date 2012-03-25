@@ -13,5 +13,21 @@
 <p class="form-buttons">
   <%= button t("actions.create") %>
 </p>
-
 <% end %>
+
+<table>
+  <tr>
+    <th>Date creation</th>
+    <th>CSV Name</th>
+    <th>Status</th>
+    <th>Date Status</th>
+  </tr>
+  <% ProductImport.all.each do |import| %>
+    <tr>
+      <td><%= import.created_at -%></td>
+      <td><%= import.data_file_file_name -%></td>
+      <td><%= t(import.state, :scope => "product_import.state") -%></td>
+      <td><%= import.state_datetime -%></td>
+    </tr>
+  <% end %>
+</table>
