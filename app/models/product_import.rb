@@ -23,6 +23,30 @@ class ProductImport < ActiveRecord::Base
   require 'pp'
   require 'open-uri'
 
+  state_machine :initial => :created do
+
+    event :start do
+      transition :to => :started, :from => :created
+    end
+    event :complete do
+      transition :to => :completed, :from => :started
+    end
+    event :fail do
+      transition :to => :failed, :from => :started
+    end
+
+    before_transition :to => [:failed] do |import|
+      import.failed_at = Time.now
+      import.completed_at = nil
+    end
+
+    before_transition :to => [:completed] do |import|
+      import.failed_at = nil
+      import.completed_at = Time.now
+    end
+  end
+
+
   ## Data Importing:
   # List Price maps to Master Price, Current MAP to Cost Price, Net 30 Cost unused
   # Width, height, Depth all map directly to object
