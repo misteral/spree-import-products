@@ -16,7 +16,7 @@ class ProductImport < ActiveRecord::Base
   serialize :product_ids, Array
 
   def products
-    @products ||= Spree::Product.find product_ids
+    Spree::Product.find product_ids
   end
 
   require 'csv'

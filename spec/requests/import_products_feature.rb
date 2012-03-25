@@ -18,6 +18,10 @@ feature "Import products" do
     visit spree.admin_product_imports_path
     page.should have_content("valid.csv")
     page.should have_content("Completed")
+    click_link "Show"
+    page.should have_content("S0388G-bloch-kids-tap-flexewe")
+    # click_link "Destroy"
+    save_and_open_page
   end
 
 end

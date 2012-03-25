@@ -21,6 +21,7 @@
     <th>CSV Name</th>
     <th>Status</th>
     <th>Date Status</th>
+    <th>Actions</th>
   </tr>
   <% ProductImport.all.each do |import| %>
     <tr>
@@ -28,6 +29,7 @@
       <td><%= import.data_file_file_name -%></td>
       <td><%= t(import.state, :scope => "product_import.state") -%></td>
       <td><%= import.state_datetime -%></td>
+      <td><%= link_to "Show", admin_product_import_path(import) -%> </td>
     </tr>
   <% end %>
 </table>
