@@ -1,0 +1,8 @@
+ru:
+  product_import_processing: 'Спасибо задача импорта добавлена в очередь.'
+  product_imports: 'Импорт товаров'
+  form:
+    product_import:
+    heading: 'Импорт товаров из CSV'
+    new: 'Новый'
+    data_file: "Файл данных с товарами"

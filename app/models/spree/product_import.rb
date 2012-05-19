@@ -92,7 +92,7 @@ module Spree
         @products_before_import = Spree::Product.all
         @names_of_products_before_import = @products_before_import.map(&:name)
 
-        rows = CSV.read(self.data_file.path)
+        rows = CSV.read(self.data_file.path, {:col_sep=>"\t",:quote_char=>"\t"})
 
         if IMPORT_PRODUCT_SETTINGS[:first_row_is_headings]
           col = get_column_mappings(rows[0])
@@ -118,6 +118,9 @@ module Spree
 
           #Manually set available_on if it is not already set
           product_information[:available_on] = Date.today - 1.day if product_information[:available_on].nil?
+          product_information[:cost_price] = product_information[:master_price].to_f*product_information[:margin].to_f
+          product_information[:permalink] = Russian.translit(product_information[:name])
+
           log("#{pp product_information}")
 
           variant_comparator_field = IMPORT_PRODUCT_SETTINGS[:variant_comparator_field].try :to_sym
