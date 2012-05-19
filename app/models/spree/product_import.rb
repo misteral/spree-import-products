@@ -13,6 +13,8 @@ module Spree
     has_attached_file :data_file, :path => ":rails_root/lib/etc/product_data/data-files/:basename.:extension"
     validates_attachment_presence :data_file
 
+    attr_accessible :data_file
+
     after_destroy :destroy_products
 
     serialize :product_ids, Array
@@ -227,7 +229,7 @@ module Spree
         if product.respond_to?("#{field}=")
           product.send("#{field}=", value)
         elsif property = Spree::Property.where(["name = ?", field]).first
-          product.product_properties.build :value => value, :property => property
+          product.product_properties.build({:value => value, :property => property}, :without_protection => true)
         end
       end
 

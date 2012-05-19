@@ -1,7 +1,5 @@
 # This file is the thing you have to config to match your application
 
-# This file is the thing you have to config to match your application
-
 IMPORT_PRODUCT_SETTINGS = {
   :column_mappings => { #Change these for manual mapping of product fields to the CSV file
     :sku => 0,
