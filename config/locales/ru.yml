@@ -1,6 +1,8 @@
 ru:
   product_import_processing: 'Спасибо задача импорта добавлена в очередь.'
   product_imports: 'Импорт товаров'
+  confirm_delete_product_import: 'Подтверждение удаления'
+  delete_product_import_successful: 'Импорт удален успешно'
   form:
     product_import:
     heading: 'Импорт товаров из CSV'

@@ -118,7 +118,7 @@ module Spree
 
           #Manually set available_on if it is not already set
           product_information[:available_on] = Date.today - 1.day if product_information[:available_on].nil?
-          product_information[:cost_price] = product_information[:master_price].to_f*product_information[:margin].to_f
+          product_information[:master_price] = product_information[:cost_price].to_f*product_information[:margin].to_f
           product_information[:permalink] = Russian.translit(product_information[:name])
 
           log("#{pp product_information}")
